@@ -1,0 +1,21 @@
+# Sensitive and unnecessary files
+.env
+*.env
+*.pyc
+__pycache__/
+node_modules/
+*.log
+*.sqlite
+*.db
+.DS_Store
+*.exe
+*.so
+crawled_pages.txt
+build_cpp_engine.bat
+build_cpp_service.bat
+build_cpp.sh
+build_enhanced_bot.bat
+build_enhanced_bot.sh
+cpp_crawler/config.ini
+cpp_engine/lib_process_data.so
+package-lock.json

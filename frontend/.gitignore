@@ -1,0 +1,14 @@
+# Sensitive and unnecessary files for frontend
+.env
+*.env
+node_modules/
+build/
+dist/
+*.log
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+coverage/
