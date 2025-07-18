@@ -60,7 +60,7 @@ ketiveeserchengin/
 
 1. **Clone the repository**
    ```bash
-   git clone <https://github.com/KetiveeAI/ZepraSearch.git>
+   git clone https://github.com/KetiveeAI/ZepraSearch.git
    cd ketiveeserchengin
    ```
 
