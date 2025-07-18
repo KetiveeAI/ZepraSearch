@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "F:/ketivee_org_project/ketivee.com/ZepraSearch/backend/cpp_crawler"
+    "cmake.sourceDirectory": "F:/ketivee_org_project/ketivee.com/ZepraSearch/backend/cpp_crawler",
+    "git.ignoreLimitWarning": true
 }
