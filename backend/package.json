@@ -1,0 +1,54 @@
+{
+  "name": "zeppa-search-engine",
+  "version": "2.0.0",
+  "description": "Zeppa Search Engine Backend with C++ Integration",
+  "main": "api-gateway.js",
+  "scripts": {
+    "start": "node api-gateway.js",
+    "dev": "nodemon api-gateway.js",
+    "server": "node server.js",
+    "build-cpp": "build_cpp_service.bat",
+    "build-cpp-engine": "build_cpp_engine.bat",
+    "test": "node test-search-service.js",
+    "test-basic": "node test-search-quality.js",
+    "test-simple": "node test-search-only.js",
+    "test-cpp": "node test-cpp-search-engine.js"
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "^9.0.3",
+    "@types/sqlite3": "^3.1.11",
+    "axios": "^1.5.0",
+    "cheerio": "^1.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "elasticsearch": "^16.7.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "fuse.js": "^7.0.0",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.0",
+    "rate-limiter-flexible": "^2.4.2",
+    "redis": "^5.6.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "search-engine",
+    "c++-integration",
+    "api-gateway",
+    "real-time-search",
+    "educational-content",
+    "semantic-search",
+    "web-crawling",
+    "analytics"
+  ],
+  "author": "Zeppa Search Team",
+  "license": "MIT"
+}

@@ -1,0 +1,1 @@
+This directory contains legacy or unused files from previous versions of the Zeppa C++ search engine. Files are moved here for archival and backup purposes. If you need to restore or reference old code, check here first before deleting permanently. 

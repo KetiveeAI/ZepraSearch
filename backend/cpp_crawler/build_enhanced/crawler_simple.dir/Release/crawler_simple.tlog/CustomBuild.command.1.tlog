@@ -1,0 +1,10 @@
+^F:\KETIVEE_ORG_PROJECT\KETIVEE.COM\KETIVEESERCHENGIN\BACKEND\CPP_CRAWLER\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SF:/ketivee_org_project/ketivee.com/ketiveeserchengin/backend/cpp_crawler -BF:/ketivee_org_project/ketivee.com/ketiveeserchengin/backend/cpp_crawler/build_enhanced --check-stamp-file F:/ketivee_org_project/ketivee.com/ketiveeserchengin/backend/cpp_crawler/build_enhanced/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,90 @@
+cmake_minimum_required(VERSION 3.10)
+project(ketivee_crawler)
+
+set(CMAKE_CXX_STANDARD 17)
+
+# Windows-specific settings
+if(WIN32)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8")
+endif()
+
+# Find required libraries with fallbacks
+find_package(CURL QUIET)
+if(NOT CURL_FOUND)
+    message(WARNING "CURL not found, will use Windows HTTP APIs")
+    set(USE_WINDOWS_HTTP ON)
+endif()
+
+find_package(MongoCXX QUIET)
+if(NOT MongoCXX_FOUND)
+    message(WARNING "MongoCXX not found, will use basic file storage")
+    set(USE_FILE_STORAGE ON)
+endif()
+
+find_package(Threads REQUIRED)
+
+# Include directories
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+# Gumbo parser setup (simplified for Windows)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/vendor/gumbo-parser/src/gumbo.h")
+    add_library(gumbo STATIC
+        vendor/gumbo-parser/src/attribute.c
+        vendor/gumbo-parser/src/char_ref.c
+        vendor/gumbo-parser/src/error.c
+        vendor/gumbo-parser/src/parser.c
+        vendor/gumbo-parser/src/string_buffer.c
+        vendor/gumbo-parser/src/string_piece.c
+        vendor/gumbo-parser/src/tag.c
+        vendor/gumbo-parser/src/tokenizer.c
+        vendor/gumbo-parser/src/utf8.c
+        vendor/gumbo-parser/src/util.c
+        vendor/gumbo-parser/src/vector.c
+    )
+    target_include_directories(gumbo PUBLIC
+        vendor/gumbo-parser/src
+    )
+else()
+    message(WARNING "Gumbo parser not found, will use basic HTML parsing")
+    set(USE_BASIC_HTML_PARSER ON)
+endif()
+
+# Main executable
+add_executable(crawler
+    main.cpp
+)
+
+# Link libraries based on availability
+target_link_libraries(crawler
+    PRIVATE
+        Threads::Threads
+)
+
+if(CURL_FOUND)
+    target_link_libraries(crawler PRIVATE ${CURL_LIBRARIES})
+    target_include_directories(crawler PRIVATE ${CURL_INCLUDE_DIRS})
+endif()
+
+if(MongoCXX_FOUND)
+    target_link_libraries(crawler PRIVATE ${MONGOCXX_LIBRARIES})
+    target_include_directories(crawler PRIVATE ${MONGOCXX_INCLUDE_DIRS})
+endif()
+
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/vendor/gumbo-parser/src/gumbo.h")
+    target_link_libraries(crawler PRIVATE gumbo)
+endif()
+
+# Windows-specific libraries
+if(WIN32)
+    target_link_libraries(crawler PRIVATE ws2_32 wininet)
+endif()
+
+# Install dependencies script
+add_custom_target(dependencies
+    COMMAND git submodule update --init --recursive
+    COMMAND mkdir -p vendor
+    COMMAND cd vendor && git clone https://github.com/google/gumbo-parser.git
+) 

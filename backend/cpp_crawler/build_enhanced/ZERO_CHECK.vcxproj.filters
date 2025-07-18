@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="F:\ketivee_org_project\ketivee.com\ketiveeserchengin\backend\cpp_crawler\build_enhanced\CMakeFiles\f7bcc030b87a3f1eeb03669f64922a41\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{0A3D1B3F-693B-3F9F-833E-15AD18419969}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

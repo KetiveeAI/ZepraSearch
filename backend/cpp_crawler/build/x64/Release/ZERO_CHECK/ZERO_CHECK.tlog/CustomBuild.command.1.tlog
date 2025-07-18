@@ -1,0 +1,10 @@
+^F:\KETIVEE_ORG_PROJECT\ZEPRA\KETIVEESERCHENGIN\BACKEND\CPP_CRAWLER\BUILD\CMAKEFILES\E636E9F49AF789D83718978E4CFA9C8F\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SF:/ketivee_org_project/zepra/ketiveeserchengin/backend/cpp_crawler -BF:/ketivee_org_project/zepra/ketiveeserchengin/backend/cpp_crawler/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file F:/ketivee_org_project/zepra/ketiveeserchengin/backend/cpp_crawler/build/ketivee_crawler_simple.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

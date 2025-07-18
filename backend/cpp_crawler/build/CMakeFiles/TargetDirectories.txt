@@ -1,0 +1,3 @@
+F:/ketivee_org_project/zepra/ketiveeserchengin/backend/cpp_crawler/build/CMakeFiles/crawler_simple.dir
+F:/ketivee_org_project/zepra/ketiveeserchengin/backend/cpp_crawler/build/CMakeFiles/ALL_BUILD.dir
+F:/ketivee_org_project/zepra/ketiveeserchengin/backend/cpp_crawler/build/CMakeFiles/ZERO_CHECK.dir

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ketivee Search Engine - Independent & Self-Sufficient</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .search-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #e1e5e9;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .filter-btn.active:hover {
+            color: white;
+        }
+
+        .results-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            min-height: 200px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result-item {
+            border-bottom: 1px solid #e1e5e9;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .result-item:hover {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 0 -20px;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-title {
+            color: #1a0dab;
+            font-size: 1.2rem;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .result-title:hover {
+            text-decoration: underline;
+        }
+
+        .result-url {
+            color: #006621;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .result-snippet {
+            color: #545454;
+            line-height: 1.5;
+        }
+
+        .result-meta {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .educational-badge {
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .page-btn {
+            padding: 10px 15px;
+            border: 1px solid #e1e5e9;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .page-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .stats {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #c3e6cb;
+        }
+
+        .category-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .category-title {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-title i {
+            font-size: 1.2rem;
+            color: #667eea;
+        }
+
+        .category-results .result-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 15px 0;
+        }
+
+        .category-results .result-item:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-btn {
+                width: 100%;
+            }
+            
+            .filters {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-search"></i> Ketivee Search</h1>
+            <p>Independent & Self-Sufficient Search Engine</p>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search for anything..." autocomplete="off">
+                <button class="search-btn" id="searchBtn" onclick="performSearch()">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+
+            <div class="filters">
+                <button class="filter-btn active" data-type="all" onclick="setFilter('all')">All</button>
+                <button class="filter-btn" data-type="educational" onclick="setFilter('educational')">Educational</button>
+                <button class="filter-btn" data-type="news" onclick="setFilter('news')">News</button>
+                <button class="filter-btn" data-type="videos" onclick="setFilter('videos')">Videos</button>
+                <button class="filter-btn" data-type="docs" onclick="setFilter('docs')">Documents</button>
+                <button class="filter-btn" data-type="shopping" onclick="setFilter('shopping')">Shopping</button>
+            </div>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Searching...</p>
+            </div>
+            <div id="results"></div>
+        </div>
+
+        <div class="stats" id="stats" style="display: none;">
+            <h3><i class="fas fa-chart-bar"></i> Search Statistics</h3>
+            <div class="stats-grid" id="statsGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:6329';
+        let currentQuery = '';
+        let currentPage = 1;
+        let currentFilter = 'all';
+        let searchTimeout;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            
+            // Search on Enter key
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            // Auto-search with debouncing
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    if (this.value.length >= 3) {
+                        performSearch();
+                    }
+                }, 500);
+            });
+
+            // Load trending searches
+            loadTrendingSearches();
+        });
+
+        function setFilter(type) {
+            currentFilter = type;
+            
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-type="${type}"]`).classList.add('active');
+            
+            // Re-search with new filter
+            if (currentQuery) {
+                performSearch();
+            }
+        }
+
+        async function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+
+            currentQuery = query;
+            currentPage = 1;
+            
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(query)}&page=${currentPage}&limit=10&type=${currentFilter}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                displayResults(data);
+                updateStats(data);
+                
+                // Record search for trending
+                recordSearch(query);
+                
+            } catch (error) {
+                console.error('Search error:', error);
+                showError('Search failed. Please try again.');
+            }
+        }
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            const loadingDiv = document.getElementById('loading');
+            
+            loadingDiv.style.display = 'none';
+            
+            if (!data.results || data.results.length === 0) {
+                resultsDiv.innerHTML = `
+                    <div class="loading">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #ccc; margin-bottom: 20px;"></i>
+                        <p>No results found for "${currentQuery}"</p>
+                        <p style="color: #666; margin-top: 10px;">Try different keywords or check your spelling.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div style="margin-bottom: 20px; color: #666;">
+                    <p>Found ${data.total} results for "${data.query}" (${data.latency})</p>
+                    ${data.quality_metrics ? `
+                        <div style="font-size: 0.9rem; margin-top: 5px; color: #888;">
+                            <span title="Quality filtered results">✓ ${data.quality_metrics.valid_results} quality results</span>
+                            ${data.quality_metrics.filtered_out > 0 ? 
+                                `<span style="margin-left: 10px;" title="Low quality results filtered out">⚠ ${data.quality_metrics.filtered_out} filtered</span>` : ''}
+                            <span style="margin-left: 10px;" title="Average quality score">★ ${(data.quality_metrics.average_quality_score * 100).toFixed(1)}% avg quality</span>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // Group results by category for better organization
+            const groupedResults = groupResultsByCategory(data.results);
+            
+            // Show results organized by category
+            for (const [category, results] of Object.entries(groupedResults)) {
+                if (results.length > 0) {
+                    html += `
+                        <div class="category-section">
+                            <h3 class="category-title">
+                                <i class="fas ${getCategoryIcon(category)}"></i>
+                                ${formatCategoryName(category)} (${results.length})
+                            </h3>
+                            <div class="category-results">
+                    `;
+                    
+                    results.forEach(result => {
+                        const educationalBadge = result.isEducational ? 
+                            '<span class="educational-badge"><i class="fas fa-graduation-cap"></i> Educational</span>' : '';
+                        
+                        const subjects = result.subjects?.length > 0 ? 
+                            result.subjects.join(', ') : '';
+                        
+                        const qualityIndicator = getQualityIndicator(result.score);
+                        
+                        html += `
+                            <div class="result-item">
+                                <a href="${result.url}" class="result-title" target="_blank" onclick="recordClick('${data.query}', '${result.url}')">
+                                    ${result.title}
+                                </a>
+                                <div class="result-url">${result.url}</div>
+                                <div class="result-snippet">${result.snippet}</div>
+                                <div class="result-meta">
+                                    ${educationalBadge}
+                                    ${subjects ? `<span class="meta-item"><i class="fas fa-tags"></i> ${subjects}</span>` : ''}
+                                    <span class="meta-item">${qualityIndicator} ${(result.score * 100).toFixed(1)}%</span>
+                                    ${result.educationalType ? `<span class="meta-item"><i class="fas fa-book"></i> ${result.educationalType}</span>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += `
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            // Add pagination
+            if (data.pages > 1) {
+                html += createPagination(data.page, data.pages);
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        // NEW: Group results by category
+        function groupResultsByCategory(results) {
+            const grouped = {};
+            
+            results.forEach(result => {
+                const category = result.category || 'general';
+                if (!grouped[category]) {
+                    grouped[category] = [];
+                }
+                grouped[category].push(result);
+            });
+            
+            // Sort categories by number of results
+            const sortedCategories = Object.keys(grouped).sort((a, b) => 
+                grouped[b].length - grouped[a].length
+            );
+            
+            const sortedGrouped = {};
+            sortedCategories.forEach(category => {
+                sortedGrouped[category] = grouped[category];
+            });
+            
+            return sortedGrouped;
+        }
+
+        // NEW: Get category icon
+        function getCategoryIcon(category) {
+            const icons = {
+                'educational': 'fa-graduation-cap',
+                'technology': 'fa-microchip',
+                'news': 'fa-newspaper',
+                'shopping': 'fa-shopping-cart',
+                'travel': 'fa-plane',
+                'general': 'fa-globe'
+            };
+            return icons[category] || 'fa-globe';
+        }
+
+        // NEW: Format category name
+        function formatCategoryName(category) {
+            const names = {
+                'educational': 'Educational',
+                'technology': 'Technology',
+                'news': 'News',
+                'shopping': 'Shopping',
+                'travel': 'Travel',
+                'general': 'General'
+            };
+            return names[category] || category.charAt(0).toUpperCase() + category.slice(1);
+        }
+
+        // NEW: Get quality indicator
+        function getQualityIndicator(score) {
+            if (score >= 0.8) return '<i class="fas fa-star" style="color: #ffd700;"></i>';
+            if (score >= 0.6) return '<i class="fas fa-star-half-alt" style="color: #ffd700;"></i>';
+            if (score >= 0.4) return '<i class="fas fa-circle" style="color: #90EE90;"></i>';
+            return '<i class="fas fa-circle" style="color: #ccc;"></i>';
+        }
+
+        function createPagination(currentPage, totalPages) {
+            let html = '<div class="pagination">';
+            
+            // Previous button
+            if (currentPage > 1) {
+                html += `<button class="page-btn" onclick="changePage(${currentPage - 1})">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>`;
+            }
+            
+            // Page numbers
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+            
+            for (let i = startPage; i <= endPage; i++) {
+                html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+            }
+            
+            // Next button
+            if (currentPage < totalPages) {
+                html += `<button class="page-btn" onclick="changePage(${currentPage + 1})">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>`;
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        async function changePage(page) {
+            currentPage = page;
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(currentQuery)}&page=${currentPage}&limit=10&type=${currentFilter}`);
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                console.error('Page change error:', error);
+                showError('Failed to load page. Please try again.');
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').innerHTML = '';
+        }
+
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('results').innerHTML = `
+                <div class="error">
+                    <i class="fas fa-exclamation-triangle"></i> ${message}
+                </div>
+            `;
+        }
+
+        function updateStats(data) {
+            const statsDiv = document.getElementById('stats');
+            const statsGrid = document.getElementById('statsGrid');
+            
+            statsGrid.innerHTML = `
+                <div class="stat-item">
+                    <div class="stat-value">${data.total}</div>
+                    <div class="stat-label">Total Results</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${data.latency}</div>
+                    <div class="stat-label">Response Time</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${data.page}</div>
+                    <div class="stat-label">Current Page</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${data.pages}</div>
+                    <div class="stat-label">Total Pages</div>
+                </div>
+            `;
+            
+            statsDiv.style.display = 'block';
+        }
+
+        async function recordSearch(query) {
+            try {
+                await fetch(`${API_BASE}/api/trending/record`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query, category: currentFilter })
+                });
+            } catch (error) {
+                console.error('Failed to record search:', error);
+            }
+        }
+
+        async function recordClick(query, url) {
+            try {
+                await fetch(`${API_BASE}/api/search/click`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query, url })
+                });
+            } catch (error) {
+                console.error('Failed to record click:', error);
+            }
+        }
+
+        async function loadTrendingSearches() {
+            try {
+                const response = await fetch(`${API_BASE}/api/trending?limit=5`);
+                const data = await response.json();
+                
+                if (data.trendingSearches && data.trendingSearches.length > 0) {
+                    // You could display trending searches here
+                    console.log('Trending searches:', data.trendingSearches);
+                }
+            } catch (error) {
+                console.error('Failed to load trending searches:', error);
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,26 @@
+
+ketiveeserchengin/
+├── backend/
+│   ├── server.js
+│   ├── routes/
+│   │   ├── search.js
+│   │   └── config.js
+│   ├── services/
+│   │   ├── searchService.js
+│   │   └── indexService.js
+│   ├── models/
+│   │   └── searchIndex.js
+│   └── package.json
+├── frontend/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── SearchBar.js
+│   │   │   ├── SearchResults.js
+│   │   │   ├── VoiceSearch.js
+│   │   │   └── TabNavigation.js
+│   │   ├── App.js
+│   │   └── index.js
+│   └── package.json
+└── README.md
